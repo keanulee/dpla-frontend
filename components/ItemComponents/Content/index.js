@@ -10,7 +10,7 @@ const Content = ({ item, url }) =>
   <div className={classNames.content}>
     <h1 className={classNames.title}>{item.title}</h1>
     <MainMetadata item={item} url={url} />
-    <OtherMetadata item={item} />
+    <OtherMetadata item={item} url={url} />
     <style dangerouslySetInnerHTML={{ __html: stylesheet }} />
     <JsonLdMarkup item={item} url={url} />
   </div>;
