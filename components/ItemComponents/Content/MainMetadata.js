@@ -2,7 +2,13 @@ import React from "react";
 import ItemImage from "./ItemImage";
 import Row from "./Row";
 
-import { joinIfArray, readMyRights, showMoreDescription } from "utilFunctions";
+import {
+  joinIfArray,
+  readMyRights,
+  showMoreDescription,
+  trackClickThrough
+} from "utilFunctions";
+
 import { rightsURLs } from "constants/site.js";
 
 import { classNames, stylesheet } from "./Content.css";
@@ -27,11 +33,20 @@ const RightsBadge = ({ url }) => {
     : null;
 };
 
-const MainMetadata = ({ item }) => {
+const MainMetadata = ({ item, url }) => {
   const maxDescriptionLength = 600; //characters
   const descriptionIsLong = item.description
     ? joinIfArray(item.description).length > maxDescriptionLength
     : false;
+
+  // Metadata for tracking a Google Analytics click through event.
+  const gaEvent = {
+    type: "Click Through",
+    itemId: url.query.itemId,
+    title: item.title,
+    partner: item.partner,
+    contributor: item.contributor
+  };
 
   return (
     <div className={classNames.mainMetadata}>
@@ -51,7 +66,8 @@ const MainMetadata = ({ item }) => {
                 href={item.sourceUrl}
                 rel="noopener noreferrer"
                 target="_blank"
-                className={`${classNames.sourceLink} clickThrough`}
+                className={`${classNames.sourceLink}`}
+                onClick={e => trackClickThrough(e, gaEvent, item.sourceUrl)}
               >
                 <span className={classNames.sourceLinkText}>
                   {item.type === "image"

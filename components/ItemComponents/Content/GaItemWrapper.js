@@ -2,13 +2,7 @@ import React from "react";
 import ReactGA from "react-ga";
 import Router from "next/router";
 import { gaTrackingId } from "constants/env";
-import {
-  bindLinkEvent,
-  initGa,
-  getFullPath,
-  joinIfArray,
-  trackGaEvent
-} from "utilFunctions";
+import { initGa, getFullPath, joinIfArray, trackGaEvent } from "utilFunctions";
 
 export default WrappedComponent =>
   class GaItemWrapper extends React.Component {
@@ -27,7 +21,6 @@ export default WrappedComponent =>
       initGa();
       this.trackItemView();
       Router.router.events.on("routeChangeComplete", this.trackItemView);
-      this.bindClickThroughEvent();
     }
 
     // Cleanup, prevents multiple pageviews being counted for a single route.
@@ -51,20 +44,6 @@ export default WrappedComponent =>
 
         this.lastTrackedPath = fullPath;
       }
-    }
-
-    bindClickThroughEvent() {
-      const links = document.getElementsByClassName("clickThrough");
-
-      const gaEvent = {
-        type: "Click Through",
-        itemId: this.itemId,
-        title: this.title,
-        partner: this.partner,
-        contributor: this.contributor
-      };
-
-      bindLinkEvent(gaEvent, links);
     }
 
     render() {
