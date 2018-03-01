@@ -21,6 +21,7 @@ import getMenuItemUrl from "./getMenuItemUrl";
 import getMetaPageTitle from "./getMetaPageTitle";
 import getPartner from "./getPartner";
 import getSearchPageTitle from "./getSearchPageTitle";
+import getSourceLink from "./getSourceLink";
 import getTitle from "./getTitle";
 import joinIfArray from "./joinIfArray";
 import makeURLsClickable from "./makeURLsClickable";
@@ -34,6 +35,7 @@ import truncateString from "./truncateString";
 // google analytics imports organized alphabetically
 import bindLinkEvent from "./googleAnalytics/bindLinkEvent";
 import initGa from "./googleAnalytics/initGa";
+import trackClickThrough from "./googleAnalytics/trackClickThrough";
 import trackGaEvent from "./googleAnalytics/trackGaEvent";
 
 export {
@@ -59,6 +61,7 @@ export {
   getMetaPageTitle,
   getPartner,
   getSearchPageTitle,
+  getSourceLink,
   getTitle,
   joinIfArray,
   makeURLsClickable,
@@ -70,5 +73,6 @@ export {
   truncateString,
   bindLinkEvent,
   initGa,
+  trackClickThrough,
   trackGaEvent
 };
