@@ -14,10 +14,11 @@ import {
   joinIfArray,
   getItemId,
   getPartner,
-  showMoreDescription,
-  getTitle,
   getContributor,
-  trackGaEvent
+  getTitle,
+  getSourceLink,
+  showMoreDescription,
+  trackClickThrough
 } from "utilFunctions";
 
 import { classNames, stylesheet } from "./ContentAndMetadata.css";
@@ -29,11 +30,6 @@ const { container } = utilClassNames;
 
 const link = "/static/images/link.svg";
 const external = "/static/images/external-link-black.svg";
-
-const getSourceLink = source =>
-  source.mainEntity[0]["dct:references"].filter(
-    ref => ref["@type"] === "WebPage"
-  )[0]["@id"];
 
 const getSourceCitation = (source, type = "citation") =>
   source.mainEntity[0]["citation"]
@@ -59,32 +55,6 @@ const getViewerComponent = (fileFormat, type, pathToFile) => {
 const getDomainFromThumbnail = thumbnailUrl =>
   /^(?:https?:)?(\/\/[\w.]+\/)/.exec(thumbnailUrl)[1];
 
-// TODO: Make this a utilFunction and use in all Click Through events.
-const trackClickThrough = (e, source, target = "_blank") => {
-  const href = getSourceLink(source);
-
-  const gaEvent = {
-    type: "Click Through",
-    itemId: getItemId(source),
-    title: joinIfArray(getTitle(source)),
-    partner: joinIfArray(getPartner(source)),
-    contributor: joinIfArray(getContributor(source))
-  };
-
-  // e is a React synthetic event
-  e.preventDefault();
-
-  try {
-    // Try tracking a Google Analytics event.
-    trackGaEvent(gaEvent);
-  } catch (error) {
-    // TODO: What is the best way to log an error?
-  } finally {
-    // Open the link, even if the Google Analytics event tracking failed.
-    window.open(href, target);
-  }
-};
-
 const ContentAndMetadata = ({ source }) => {
   const type = source.mainEntity[0]["@type"];
   const { fileFormat, contentUrl } = source.mainEntity[0].associatedMedia[0];
@@ -102,6 +72,17 @@ const ContentAndMetadata = ({ source }) => {
   const descriptionIsLong = source.text
     ? source.text.length > maxDescriptionLength
     : false;
+
+  // Metadata for tracking a Google Analytics click through event.
+  const gaEvent = {
+    type: "Click Through",
+    itemId: getItemId(source),
+    title: joinIfArray(getTitle(source)),
+    partner: joinIfArray(getPartner(source)),
+    contributor: joinIfArray(getContributor(source))
+  };
+
+  const sourceLink = getSourceLink(source);
 
   return (
     <div className={classNames.wrapper}>
@@ -207,9 +188,9 @@ const ContentAndMetadata = ({ source }) => {
               {source.mainEntity[0]["dct:references"] &&
                 <div className={classNames.linkWrapper}>
                   <a
-                    href={getSourceLink(source)}
+                    href={sourceLink}
                     className={`${classNames.sourceLink}`}
-                    onClick={e => trackClickThrough(e, source)}
+                    onClick={e => trackClickThrough(e, gaEvent, sourceLink)}
                     rel="noopener noreferrer"
                     target="_blank"
                   >
