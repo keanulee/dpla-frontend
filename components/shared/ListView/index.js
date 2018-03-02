@@ -36,6 +36,25 @@ const ListView = ({ items, route }) => {
     trackClickThrough(e, gaEvent, sourceUrl);
   };
 
+  const handleBrowseEvent = (e, item) => {
+    alert("browse route");
+    // Only activate on a browse page
+    // if(route.pathname.indexOf("/search") === 0) {
+
+    //   const gaEvent = {
+    //     type: "Browse Item",
+    //     itemId: item.id,
+    //     title: joinIfArray(item.title),
+    //     partner: joinIfArray(item.provider),
+    //     contributor: joinIfArray(item.dataProvider)
+    //   };
+    //   const sourceUrl = item.sourceUrl;
+    //   // Open item page in same page, rather than new page.
+    //   const target = "_self";
+    //   trackClickThrough(e, gaEvent, sourceUrl, target);
+    // }
+  };
+
   return (
     <ul className={classNames.listView}>
       {items.map(item =>
@@ -48,7 +67,11 @@ const ListView = ({ items, route }) => {
             useDefaultImage={item.useDefaultImage}
           />
           <div className={classNames.itemInfo}>
-            <Link href={item.linkHref} as={item.linkAs}>
+            <Link
+              href={item.linkHref}
+              as={item.linkAs}
+              onClick={e => handleClickThrough(e, item)}
+            >
               <a className={`classNames.listItemLink internalItemLink`}>
                 <h2 className={`hover-underline ${classNames.itemTitle}`}>
                   {route.pathname.indexOf("/search") === 0 && item.title
