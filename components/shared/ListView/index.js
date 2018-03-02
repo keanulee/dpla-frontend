@@ -23,18 +23,19 @@ const ItemDescription = ({ description }) => {
   );
 };
 
-const getGaEvent = item => {
-  const gaEvent = {
-    type: "Click Through",
-    itemId: item.id,
-    title: joinIfArray(item.title),
-    partner: joinIfArray(item.provider),
-    contributor: joinIfArray(item.dataProvider)
-  };
-  return gaEvent;
-};
-
 const ListView = ({ items, route }) => {
+  const handleClickThrough = (e, item) => {
+    const gaEvent = {
+      type: "Click Through",
+      itemId: item.id,
+      title: joinIfArray(item.title),
+      partner: joinIfArray(item.provider),
+      contributor: joinIfArray(item.dataProvider)
+    };
+    const sourceUrl = item.sourceUrl;
+    trackClickThrough(e, gaEvent, sourceUrl);
+  };
+
   return (
     <ul className={classNames.listView}>
       {items.map(item =>
@@ -75,8 +76,7 @@ const ListView = ({ items, route }) => {
               target="_blank"
               rel="noopener noreferrer"
               className={`hover-underline ${classNames.itemSource}`}
-              onClick={e =>
-                trackClickThrough(e, getGaEvent(item), item.sourceUrl)}
+              onClick={e => handleClickThrough(e, item)}
             >
               <span className={classNames.itemSourceText}>
                 {item.type === "image"
