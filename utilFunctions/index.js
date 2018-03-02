@@ -33,7 +33,6 @@ import showMoreDescription from "./showMoreDescription";
 import truncateString from "./truncateString";
 
 // google analytics imports organized alphabetically
-import bindLinkEvent from "./googleAnalytics/bindLinkEvent";
 import initGa from "./googleAnalytics/initGa";
 import trackClickThrough from "./googleAnalytics/trackClickThrough";
 import trackGaEvent from "./googleAnalytics/trackGaEvent";
@@ -71,7 +70,6 @@ export {
   removeQueryParams,
   showMoreDescription,
   truncateString,
-  bindLinkEvent,
   initGa,
   trackClickThrough,
   trackGaEvent
