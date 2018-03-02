@@ -36,10 +36,6 @@ const ListView = ({ items, route }) => {
     trackClickThrough(e, gaEvent, sourceUrl);
   };
 
-  const clickMe = () => {
-    alert("clicked!");
-  };
-
   const handleBrowseEvent = (e, item) => {
     // Only activate on a browse page
     if (route.pathname.indexOf("/browse-by-topic") === 0) {
