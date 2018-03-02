@@ -36,23 +36,25 @@ const ListView = ({ items, route }) => {
     trackClickThrough(e, gaEvent, sourceUrl);
   };
 
-  const handleBrowseEvent = (e, item) => {
-    alert("browse route");
-    // Only activate on a browse page
-    // if(route.pathname.indexOf("/search") === 0) {
+  const clickMe = () => {
+    alert("clicked!");
+  };
 
-    //   const gaEvent = {
-    //     type: "Browse Item",
-    //     itemId: item.id,
-    //     title: joinIfArray(item.title),
-    //     partner: joinIfArray(item.provider),
-    //     contributor: joinIfArray(item.dataProvider)
-    //   };
-    //   const sourceUrl = item.sourceUrl;
-    //   // Open item page in same page, rather than new page.
-    //   const target = "_self";
-    //   trackClickThrough(e, gaEvent, sourceUrl, target);
-    // }
+  const handleBrowseEvent = (e, item) => {
+    // Only activate on a browse page
+    if (route.pathname.indexOf("/browse-by-topic") === 0) {
+      const gaEvent = {
+        type: "Browse Item",
+        itemId: item.id,
+        title: joinIfArray(item.title),
+        partner: joinIfArray(item.provider),
+        contributor: joinIfArray(item.dataProvider)
+      };
+      const sourceUrl = item.sourceUrl;
+      // Open item page in same page, rather than new page.
+      const target = "_self";
+      trackClickThrough(e, gaEvent, sourceUrl, target);
+    }
   };
 
   return (
@@ -67,13 +69,12 @@ const ListView = ({ items, route }) => {
             useDefaultImage={item.useDefaultImage}
           />
           <div className={classNames.itemInfo}>
-            <Link
-              href={item.linkHref}
-              as={item.linkAs}
-              onClick={e => handleClickThrough(e, item)}
-            >
+            <Link href={item.linkHref} as={item.linkAs}>
               <a className={`classNames.listItemLink internalItemLink`}>
-                <h2 className={`hover-underline ${classNames.itemTitle}`}>
+                <h2
+                  className={`hover-underline ${classNames.itemTitle}`}
+                  onClick={e => handleBrowseEvent(e, item)}
+                >
                   {route.pathname.indexOf("/search") === 0 && item.title
                     ? truncateString(item.title, 150)
                     : item.title}
