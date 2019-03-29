@@ -26,6 +26,20 @@ const LOCALS = {
     hasAbout: true,
     hasTerms: false,
     hasContact: false
+  },
+  florida: {
+    theme: "florida",
+    provider: "%22Sunshine%20State%20Digital%20Network%22",
+    name: "Sunshine State Digital Network",
+    favicon: "favicon.png",
+    logo: "logo.png",
+    description: "Sharing Stories From the Sunshine State",
+    externalLink: "https://sunshinestatedigitalnetwork.wordpress.com/",
+    locationFacet: "%22Florida%22",
+    subjectFacet: "%22Florida%22",
+    hasAbout: false,
+    hasTerms: false,
+    hasContact: false
   }
 };
 
