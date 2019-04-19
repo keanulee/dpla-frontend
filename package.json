@@ -9,6 +9,7 @@
     "autoprefixer": "^8.3.0",
     "aws-sdk": "^2.173.0",
     "babel-plugin-inline-react-svg": "^0.5.2",
+    "babel-plugin-optimize-helpers": "^0.0.1-dev.1",
     "body-parser": "^1.18.2",
     "copy-webpack-plugin": "^4.5.1",
     "cross-env": "^5.1.3",

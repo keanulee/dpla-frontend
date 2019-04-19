@@ -57,6 +57,38 @@ module.exports = withBundleAnalyzer(
           loaders: ["file-loader?name=dist/static/images/[name].[ext]"]
         });
 
+        const optimize = !dev && !isServer;
+
+        // Only optimize browser code.
+        if (!dev && !isServer) {
+          // Include `@babel/runtime-corejs2/` in the commons bundle.
+          config.optimization.splitChunks.cacheGroups["corejs"] = {
+            name: "commons",
+            chunks: "all",
+            test: /[\\/]node_modules[\\/]@babel[\\/]runtime-corejs2[\\/]/
+          };
+
+          // Load script with the plugin.
+          config.module.rules.push({
+            test: /\.(js|mjs|jsx)$/,
+            exclude: /[\\/]node_modules[\\/]@babel[\\/]runtime-corejs2[\\/]/,
+            use: {
+              loader: "babel-loader",
+              options: {
+                babelrc: false,
+                plugins: [
+                  require.resolve("@babel/plugin-syntax-class-properties"),
+                  require.resolve("@babel/plugin-syntax-jsx"),
+                  require.resolve("@babel/plugin-syntax-object-rest-spread"),
+                  // Add other syntax plugins here.
+
+                  require("babel-plugin-optimize-helpers")
+                ]
+              }
+            }
+          });
+        }
+
         return config;
       }
     })

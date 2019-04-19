@@ -1681,6 +1681,11 @@ babel-plugin-module-resolver@^3.1.1:
     reselect "^3.0.1"
     resolve "^1.4.0"
 
+babel-plugin-optimize-helpers@^0.0.1-dev.1:
+  version "0.0.1-dev.1"
+  resolved "https://registry.yarnpkg.com/babel-plugin-optimize-helpers/-/babel-plugin-optimize-helpers-0.0.1-dev.1.tgz#048a743e75f5fdea8fae11aef30734976ec5d47d"
+  integrity sha512-SQKtesm+oLqrUaAM4fgTXseCYgJeDA43TNM8zAFrpFv5SpEM/pBW7vslUAWJMMcEkXfMqfmlAjWbEAtFaE/aRQ==
+
 babel-plugin-react-require@3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/babel-plugin-react-require/-/babel-plugin-react-require-3.0.0.tgz#2e4e7b4496b93a654a1c80042276de4e4eeb20e3"
