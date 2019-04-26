@@ -46,6 +46,10 @@ module.exports = withBundleAnalyzer(
           })
         );
 
+        config.plugins.push(
+          new webpack.IgnorePlugin(/^\.\/locale$/, /moment$/)
+        );
+
         config.module.rules.push({
           test: /\.css$/,
           exclude: /node_modules/,
@@ -57,8 +61,6 @@ module.exports = withBundleAnalyzer(
           loaders: ["file-loader?name=dist/static/images/[name].[ext]"]
         });
 
-        const optimize = !dev && !isServer;
-
         // Only optimize browser code.
         if (!dev && !isServer) {
           // Include `@babel/runtime-corejs2/` in the commons bundle.
@@ -66,6 +68,38 @@ module.exports = withBundleAnalyzer(
             name: "commons",
             chunks: "all",
             test: /[\\/]node_modules[\\/]@babel[\\/]runtime-corejs2[\\/]/
+          };
+
+          config.optimization.splitChunks = {
+            ...config.optimization.splitChunks,
+            maxInitialRequests: Infinity,
+            cacheGroups: {
+              ...config.optimization.splitChunks.cacheGroups,
+              commons: {
+                name: "commons",
+                chunks: "all",
+                minChunks: 35 // == total pages/entrypoints
+              },
+              vendors: {
+                // test: /[\\/]node_modules[\\/]/,
+                // https://hackernoon.com/the-100-correct-way-to-split-your-chunks-with-webpack-f8a9df5b7758
+                // name(module) {
+                //   // get the name. E.g. node_modules/packageName/not/this/part.js
+                //   // or node_modules/packageName
+                //   const packageName = module.context.match(
+                //     /[\\/]node_modules[\\/](.*?)([\\/]|$)/
+                //   )[1];
+
+                //   // npm package names are URL-safe, but some servers don't like @ symbols
+                //   return `npm.${packageName.replace("@", "")}`;
+                // },
+                name: (module, chunks) => chunks.map(c => c.debugId).join("-"),
+                minChunks: 2,
+                minSize: 30000,
+                priority: -10,
+                reuseExistingChunk: true
+              }
+            }
           };
 
           // Load script with the plugin.
